@@ -1,0 +1,66 @@
+﻿お問い合わせ機能 仕様書
+バージョン: 1.0
+作成日: 2025年8月10日
+作成者: 戦略・分析AI セーラ
+ステータス: 承認済み
+第1層：ユーザーの物語 (User Story)
+利用者として、アプリに関する意見や不具合を、できるだけ手間なく開発者に伝えたい。その理由は、このアプリがより良くなってほしい、あるいは、自分が抱えている問題を解決してほしいからだ。
+第2層：受け入れ条件 (Acceptance Criteria)
+この機能は、以下の条件をすべて満たした時に「完成」と見なされる。
+* [ ] 設定画面からのアクセス:
+   * SettingsScreen（設定画面）に「お問い合わせ」という項目が存在する。
+* [ ] フォームへの遷移:
+   * 「お問い合わせ」項目をタップすると、アプリ内ブラウザ（または外部ブラウザ）が起動し、指定されたGoogleフォームが表示される。
+* [ ] 情報の自動付与:
+   * フォームが開かれる際、ユーザーに意識させることなく、以下の情報がURLパラメータとしてGoogleフォームに渡されていること。
+      * 現在のアプリバージョン (例: 1.0.0)
+      * 現在のOSとバージョン (例: iOS 17.5 or Android 14)
+      * Firebaseの匿名ユーザーID
+* [ ] ユーザーによる入力:
+   * ユーザーは、フォーム上で以下の項目を入力できる。
+      * 返信先メールアドレス（任意入力）
+      * お問い合わせの種類（「ご意見・ご要望」「不具合のご報告」「その他」からの選択）
+      * お問い合わせ内容（必須入力）
+* [ ] 送信完了:
+   * ユーザーがフォームを送信すると、Googleフォーム標準の「回答を記録しました」という画面が表示される。
+第3層：実装詳細 (Implementation Details)
+3.1. UI/UXの変更
+* 対象画面: lib/screens/settings_screen.dart
+* 変更内容:
+   * 既存のリスト項目に、新しく ListTile を追加する。
+   * leading: Icon(Icons.help_outline)
+   * title: Text('お問い合わせ')
+   * onTap: 後述する SupportService のメソッドを呼び出す。
+3.2. 新規Serviceの追加
+* 目的: お問い合わせフォームへの遷移ロジックをカプセル化し、再利用性と保守性を高める。
+* ファイルパス: lib/services/support_service.dart
+* クラス名: SupportService
+* 責務:
+   1. デバイス情報とアプリ情報を取得する。
+   2. 取得した情報を付与したGoogleフォームのURLを生成する。
+   3. 生成したURLをブラウザで開く。
+* メソッド:
+   * Future<void> openContactForm()
+      * package_info_plus を利用してアプリバージョンを取得する。
+      * device_info_plus を利用してOSとバージョンを取得する。
+      * firebase_auth を利用して匿名ユーザーIDを取得する。
+      * これらの情報を Uri.encodeComponent を使ってエンコードし、Googleフォームの事前入力URLに埋め込む。
+      * url_launcher を使って、生成したURLを開く。
+3.3. 依存関係の追加
+* pubspec.yaml に、以下のパッケージが追加されていることを確認する。
+   * url_launcher: URLを開くため。
+   * package_info_plus: アプリのバージョン情報を取得するため。
+   * device_info_plus: デバイスのOS情報を取得するため。
+   * firebase_auth: 匿名ユーザーIDを取得するため。
+3.4. Googleフォームの準備
+* フォームURL: https://docs.google.com/forms/d/e/1FAIpQLSdwQ3Gkx_ZRAvHNFw53DV5tiRrbm6BjmWY2lQpL9uBvAPRqxA/viewform
+* 事前入力URLテンプレート:
+https://docs.google.com/forms/d/e/1FAIpQLSdwQ3Gkx_ZRAvHNFw53DV5tiRrbm6BjmWY2lQpL9uBvAPRqxA/viewform?usp=pp_url&entry.1482457205={appVersion}&entry.179556354={osVersion}&entry.1814332478={userId}
+
+* 必要な質問項目とIDのマッピング:
+   1. 返信先メールアドレス: (段落, 任意)
+   2. お問い合わせの種類: (プルダウン, 必須)
+   3. お問い合わせ内容: (段落, 必須)
+   4. アプリバージョン: (記述式, 非表示) ← entry.1482457205 に対応
+   5. OSバージョン: (記述式, 非表示) ← entry.179556354 に対応
+   6. ユーザーID: (記述式, 非表示) ← entry.1814332478 に対応

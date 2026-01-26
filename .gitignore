@@ -1,0 +1,28 @@
+# Sensitive Data
+*.key
+*.token
+secrets.json
+.env
+
+# System Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Temporary
+*.log
+__pycache__/
+*.tmp
+
+# Drive Sync Conflicts
+*.tmp.drivedownload
+
+# Google Docs (Cloud Shortcuts - Cannot be git tracked)
+*.gdoc
+*.gsheet
+*.gslides
+*.gform
+
+.git.bak_cloud/
+
+*.gmap

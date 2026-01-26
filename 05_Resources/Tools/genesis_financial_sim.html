@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genesis Matrix Simulator v6.1</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Helvetica, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar (Settings) */
+        .sidebar {
+            width: 380px;
+            background: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px 15px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            margin: 5px 0 10px;
+            font-size: 1.0em;
+            border-bottom: 2px solid #34495e;
+            padding-bottom: 5px;
+            color: #f1c40f;
+        }
+
+        .sidebar h3 {
+            font-size: 0.8em;
+            margin: 15px 0 5px;
+            text-transform: uppercase;
+            color: #95a5a6;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 2px;
+        }
+
+        /* Flex Row Layout */
+        .control-group {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 24px;
+        }
+
+        .control-group label {
+            font-size: 0.85em;
+            color: #bdc3c7;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 5px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Strict Sizing */
+        input {
+            padding: 4px;
+            border-radius: 3px;
+            border: none;
+            text-align: right;
+            background: #ecf0f1;
+            color: #2c3e50;
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            font-size: 0.85em;
+            height: 20px;
+        }
+
+        input.money {
+            width: 85px;
+        }
+
+        input.money-sm {
+            width: 60px;
+        }
+
+        input.num {
+            width: 40px;
+        }
+
+        input.mul {
+            width: 50px;
+            background: #95a5a6;
+            color: #fff;
+            text-align: center;
+        }
+
+        .unit {
+            font-size: 0.75em;
+            color: #95a5a6;
+        }
+
+        .help-text {
+            font-size: 0.7em;
+            color: #7f8c8d;
+            text-align: right;
+            margin-top: 0px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Main Layout */
+        .main {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: hidden;
+            gap: 10px;
+        }
+
+        .matrix-container {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex: 0 0 auto;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .matrix-table th {
+            padding: 5px;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.8em;
+        }
+
+        .matrix-table td {
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #f0f2f5;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+            height: 50px;
+            vertical-align: middle;
+        }
+
+        .matrix-table td:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .matrix-table td.selected {
+            border: 3px solid #3498db;
+        }
+
+        .cell-status {
+            font-weight: bold;
+            font-size: 1.0em;
+            display: block;
+        }
+
+        .cell-val {
+            font-size: 0.75em;
+            color: #7f8c8d;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .status-safe {
+            background-color: #e8f8f5;
+            color: #27ae60;
+        }
+
+        .status-danger {
+            background-color: #fdedec;
+            color: #c0392b;
+        }
+
+        /* Chart Area */
+        .chart-container {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            min-height: 0;
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .chart-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.0em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>Genesis Matrix Config v6.1</h2>
+
+        <h3>🌍 Base Parameters</h3>
+        <div class="control-group">
+            <label>Age (Now / Retire)</label>
+            <div class="input-row"><input type="number" class="num" id="currentAge" value="32"><input type="number"
+                    class="num" id="retirementAge" value="60"></div>
+        </div>
+        <div class="control-group">
+            <label>Asset (Start)</label>
+            <div class="input-row"><input type="text" class="money" id="initialAsset" value="14,735,674"></div>
+        </div>
+        <div class="control-group">
+            <label>Pension (Amount / Start Age)</label>
+            <div class="input-row">
+                <input type="text" class="money" id="annualPension" value="1,440,000" oninput="updM(this, 'dP')">
+                <span class="unit">@</span>
+                <input type="number" class="num" id="pensionStartAge" value="65">
+                <span class="unit">Age</span>
+            </div>
+        </div>
+        <div class="help-text" id="dP"></div>
+
+        <div class="control-group">
+            <label>ROI / Inflation</label>
+            <div class="input-row"><input type="number" class="num" id="roi" value="5.0" step="0.1"><span
+                    class="unit">%</span><input type="number" class="num" id="inflation" value="2.0" step="0.1"><span
+                    class="unit">%</span></div>
+        </div>
+
+        <div class="control-group" style="border-top:1px dashed #34495e; padding-top:4px; margin-top:4px;">
+            <label style="color:#f1c40f;">Apply Stats Curves</label>
+            <div class="input-row">
+                <input type="checkbox" id="useStats" style="width:auto;" onchange="runSimulation()" checked>
+            </div>
+        </div>
+        <div class="help-text" style="color:#f1c40f;">Wage↑(to 55) / Cost↓(from 65)</div>
+
+
+        <h3>🏳️ Cols: QOL Costs (Annual)</h3>
+        <div class="control-group">
+            <label>L1: Survival</label>
+            <div class="input-row"><input type="text" class="money" id="costL1" value="2,400,000"
+                    oninput="updM(this, 'dC1')"></div>
+        </div>
+        <div class="help-text" id="dC1"></div>
+
+        <div class="control-group">
+            <label>L2: Comfort</label>
+            <div class="input-row"><input type="text" class="money" id="costL2" value="3,000,000"
+                    oninput="updM(this, 'dC2')"></div>
+        </div>
+        <div class="help-text" id="dC2"></div>
+
+        <div class="control-group">
+            <label>L3: Ideal</label>
+            <div class="input-row"><input type="text" class="money" id="costL3" value="3,600,000"
+                    oninput="updM(this, 'dC3')"></div>
+        </div>
+        <div class="help-text" id="dC3"></div>
+
+        <h3>🚩 Rows: Income (月給/賞与) & Cost Mul</h3>
+        <!-- Combined Row: Label | Sal Input | Bon Input | x | Mul Input -->
+
+        <div class="control-group">
+            <label>A: Solo</label>
+            <div class="input-row">
+                <input type="text" class="money-sm" id="salA" value="300,000" placeholder="月給" title="Monthly Gross">
+                <span class="unit">+</span>
+                <input type="text" class="money-sm" id="bonA" value="900,000" placeholder="賞与" title="Annual Bonus">
+                <span class="unit">x</span>
+                <input type="number" class="mul" id="mulA" value="1.0" step="0.1" title="Cost Multiplier">
+            </div>
+        </div>
+        <div class="help-text" id="dIA"></div>
+
+        <div class="control-group">
+            <label>B: Dinks</label>
+            <div class="input-row">
+                <input type="text" class="money-sm" id="salB" value="500,000" placeholder="月給">
+                <span class="unit">+</span>
+                <input type="text" class="money-sm" id="bonB" value="3,000,000" placeholder="賞与">
+                <span class="unit">x</span>
+                <input type="number" class="mul" id="mulB" value="1.5" step="0.1">
+            </div>
+        </div>
+        <div class="help-text" id="dIB"></div>
+
+        <div class="control-group">
+            <label>C: Family</label>
+            <div class="input-row">
+                <input type="text" class="money-sm" id="salC" value="600,000" placeholder="月給">
+                <span class="unit">+</span>
+                <input type="text" class="money-sm" id="bonC" value="2,800,000" placeholder="賞与">
+                <span class="unit">x</span>
+                <input type="number" class="mul" id="mulC" value="1.7" step="0.1">
+            </div>
+        </div>
+        <div class="help-text" id="dIC"></div>
+
+        <div class="control-group">
+            <label style="text-align:right; font-size:0.75em; margin-right:5px;">+Edu Cost:</label>
+            <div class="input-row"><input type="text" class="money" id="addC" value="600,000"></div>
+        </div>
+
+        <div style="margin-top:20px; border-top: 1px solid #34495e; padding-top:10px;">
+            <h3 style="margin-top:0;">📊 Reference (2025 Actuals)</h3>
+            <button onclick="toggleActuals()"
+                style="width:100%; font-size:0.8em; padding:4px; background:#34495e; color:#bdc3c7; border:1px solid #7f8c8d; cursor:pointer;">
+                View Monthly Breakdown
+            </button>
+            <div id="actualsPanel"
+                style="display:none; font-size:0.75em; color:#bdc3c7; margin-top:5px; background:#22303f; padding:5px;">
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px solid #34495e; margin-bottom:2px;">
+                    <span>🏠 Housing (Gross)</span><span>149,470</span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; color:#95a5a6; margin-bottom:0; padding-left:10px;">
+                    <span>↳ <i>Inv: Matsui</i></span><span><i>-71,157</i></span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; color:#95a5a6; margin-bottom:2px; padding-left:10px;">
+                    <span>↳ <i>Inv: iDeCo</i></span><span><i>-21,406</i></span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; color:#2ecc71; margin-bottom:2px; font-weight:bold; border-bottom:1px solid #2ecc71;">
+                    <span>🏠 Real Housing</span><span>56,907</span>
+                </div>
+
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px solid #34495e; margin-bottom:2px;">
+                    <span>🍙 Food</span><span>49,165</span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px solid #34495e; margin-bottom:2px;">
+                    <span>🎮 Hobbies</span><span>23,281</span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px solid #34495e; margin-bottom:2px;">
+                    <span>💸 Cash/Card</span><span>21,152</span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px solid #34495e; margin-bottom:2px;">
+                    <span>🧻 Daily</span><span>19,459</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; color:#bdc3c7; margin-top:4px; opacity:0.7;">
+                    <span>Gross Total</span><span>262,527</span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; color:#f1c40f; font-weight:bold; margin-top:2px; border-top:1px solid #7f8c8d;">
+                    <span>True Burn (Mo)</span><span>169,964</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:#e67e22; margin-top:2px;">
+                    <span>True Burn (Yr)</span><span>2,039,568</span>
+                </div>
+
+                <div style="text-align:right; margin-top:5px;">
+                    <a href="#" onclick="applyActuals()" style="color:#3498db; text-decoration:none;">Apply True Burn to
+                        Survival</a>
+                </div>
+            </div>
+        </div>
+    </div> <!-- END SIDEBAR -->
+
+    <div class="main">
+        <div class="matrix-container">
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Life \ QOL</th>
+                        <th>Lvl 1: Survival<br><span id="dispL1" style="font-weight:normal; font-size:0.8em"></span>
+                        </th>
+                        <th>Lvl 2: Comfort<br><span id="dispL2" style="font-weight:normal; font-size:0.8em"></span>
+                        </th>
+                        <th>Lvl 3: Ideal<br><span id="dispL3" style="font-weight:normal; font-size:0.8em"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="matrixBody"></tbody>
+            </table>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <div id="selectedScenarioTitle" class="chart-title">Select a cell above</div>
+            </div>
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let chart;
+        let matrixData = {};
+        let currentSel = { patId: 'A', qolId: '1' }; // Default to Solo Survival
+
+        // Japanese Stats Coefficients (Approx)
+        // Age based multipliers. Base Age 30-34 = 1.0.
+        function getWageMul(age) {
+            if (age < 35) return 1.0;
+            if (age < 40) return 1.13;
+            if (age < 45) return 1.25;
+            if (age < 50) return 1.38;
+            if (age < 55) return 1.48;
+            if (age < 60) return 1.45;
+            return 1.0;
+        }
+
+        function getCostMul(age) {
+            if (age < 65) return 1.0;
+            if (age < 70) return 0.9;
+            if (age < 75) return 0.85;
+            if (age < 80) return 0.8;
+            return 0.75;
+        }
+
+        // Japanese Tax Logic (Approximation v2)
+        // Returns Annual Net Income from Annual Gross Income
+        function estimateNetJP(gross) {
+            if (gross <= 0) return 0;
+
+            // 1. Social Insurance
+            // Pension (Kosei Nenkin): 9.15%, Capped at ~650k/mo (~7.8M/year effectively)
+            const pensionBase = Math.min(gross, 7800000);
+            const pension = pensionBase * 0.0915;
+
+            // Health (Kenko Hoken): ~5%, Cap is very high (~1.39M/mo), effectively linear for most
+            const health = gross * 0.05;
+
+            // Employment (Koyou): ~0.6%
+            const emp = gross * 0.006;
+
+            const socialIns = Math.floor(pension + health + emp);
+
+            // 2. Income Tax Base (Gross - IncomeDeduction - SocialIns)
+            // Salary Income Deduction (Kyuyo Shotoku Kojo)
+            let salaryDed = 0;
+            if (gross <= 1625000) salaryDed = 550000;
+            else if (gross <= 1800000) salaryDed = gross * 0.4 - 100000;
+            else if (gross <= 3600000) salaryDed = gross * 0.3 + 80000;
+            else if (gross <= 6600000) salaryDed = gross * 0.2 + 440000;
+            else if (gross <= 8500000) salaryDed = gross * 0.1 + 1100000;
+            else salaryDed = 1950000; // Cap > 8.5M
+
+            // Basic Deduction (Kiso Kojo) approx 480k
+            const basicDed = 480000;
+
+            let taxableIncome = gross - salaryDed - socialIns - basicDed;
+            if (taxableIncome < 0) taxableIncome = 0;
+
+            // Income Tax Rates (Progressive)
+            let incomeTax = 0;
+            if (taxableIncome <= 1950000) incomeTax = taxableIncome * 0.05;
+            else if (taxableIncome <= 3300000) incomeTax = taxableIncome * 0.10 - 97500;
+            else if (taxableIncome <= 6950000) incomeTax = taxableIncome * 0.20 - 427500;
+            else if (taxableIncome <= 9000000) incomeTax = taxableIncome * 0.23 - 636000;
+            else incomeTax = taxableIncome * 0.33 - 1536000; // Simplified upper
+
+            // Reconstruction Tax (2.1% of Income Tax)
+            incomeTax = Math.floor(incomeTax * 1.021);
+
+            // 3. Resident Tax (approx 10% of Taxable Income + fixed ~5k)
+            // Base is slightly diff from Income Tax but approx same
+            let residentTax = Math.floor(taxableIncome * 0.10 + 5000);
+
+            return Math.floor(gross - socialIns - incomeTax - residentTax);
+        }
+
+        // Helper: Number Formats
+        function fmt(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+        function parse(s) { return parseFloat(s.replace(/,/g, '')) || 0; }
+        function fmtMoney(n) { return (n / 10000).toFixed(0) + '万'; }
+        function fmtShortMon(n) { return (n / 10000).toFixed(1) + '万/月'; }
+
+        // Update Monthly helper text (Handle both Gross->Net and Range Cost)
+        function updM(input, targetId, isGrossIncome = false) {
+            let raw = parse(input.value);
+            if (!isNaN(raw)) {
+                input.value = fmt(raw);
+                // Check if target exists
+                const target = document.getElementById(targetId);
+                if (target) {
+                    if (isGrossIncome) {
+                        const net = estimateNetJP(raw);
+                        target.innerText = '(額面:' + fmtMoney(raw) + ' → 手取:' + fmtShortMon(net / 12) + ')';
+                        target.style.color = '#e67e22'; // Orange for Net warning
+                    } else {
+                        target.innerText = '(' + fmtShortMon(raw / 12) + ')';
+                        target.style.color = '#f1c40f';
+                    }
+                }
+            }
+        }
+
+        // Trigger update for all inputs on init
+        function initDisplay() {
+            // Costs & Pension (Direct) - Manual Bind
+            ['annualPension', 'costL1', 'costL2', 'costL3'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const target = el.id === 'annualPension' ? 'dP' :
+                        el.id === 'costL1' ? 'dC1' :
+                            el.id === 'costL2' ? 'dC2' : 'dC3';
+                    updM(el, target, false);
+                }
+            });
+            // Incomes (Split) - trigger updIncome logic
+            ['A', 'B', 'C'].forEach(id => updIncomeDisplay(id));
+        }
+
+        function updIncomeDisplay(idStr) {
+            const salInput = document.getElementById('sal' + idStr);
+            const bonInput = document.getElementById('bon' + idStr);
+            const target = document.getElementById('dI' + idStr);
+
+            if (!salInput || !bonInput) return;
+
+            // Format inputs
+            const salVal = parse(salInput.value);
+            const bonVal = parse(bonInput.value);
+
+            // Avoid cursor jumping simple impl
+            if (document.activeElement !== salInput) salInput.value = fmt(salVal);
+            if (document.activeElement !== bonInput) bonInput.value = fmt(bonVal);
+
+            const totalGross = (salVal * 12) + bonVal;
+            const totalNet = estimateNetJP(totalGross);
+
+            if (target) {
+                target.innerText = `(年収:${fmtMoney(totalGross)} | 手取:${fmtMoney(totalNet)} → ${fmtMoney(totalNet / 12)}/月)`;
+                target.style.color = '#e67e22';
+            }
+        }
+
+        function init() {
+            initDisplay();
+
+            document.querySelectorAll('input').forEach(el => {
+                el.addEventListener('input', (e) => {
+                    runSimulation();
+                    // Handle formatting
+                    if (el.classList.contains('money') || el.classList.contains('money-sm')) {
+                        // Generic udpate? For Split Income specific:
+                        if (el.id.startsWith('sal') || el.id.startsWith('bon')) {
+                            updIncomeDisplay(el.id.substring(3));
+                        } else if (el.getAttribute('oninput')) {
+                            const match = el.getAttribute('oninput').match(/'([^']+)'/);
+                            if (match) updM(el, match[1]);
+                        }
+                    }
+                });
+                el.addEventListener('change', runSimulation);
+            });
+
+            runSimulation();
+        }
+
+        function runSimulation() {
+            const currentAge = parseInt(document.getElementById('currentAge').value);
+            const retirementAge = parseInt(document.getElementById('retirementAge').value);
+            const initialAsset = parse(document.getElementById('initialAsset').value);
+            const annualPension = parse(document.getElementById('annualPension').value);
+            const pensionStartAge = parseInt(document.getElementById('pensionStartAge').value);
+            const roi = parseFloat(document.getElementById('roi').value) / 100;
+            const inflation = parseFloat(document.getElementById('inflation').value) / 100;
+            const useStats = document.getElementById('useStats').checked;
+
+            // Helper to get Total Net for Pattern
+            const getNetFromSplit = (idStr) => {
+                const s = parse(document.getElementById('sal' + idStr).value);
+                const b = parse(document.getElementById('bon' + idStr).value);
+                return estimateNetJP((s * 12) + b);
+            };
+
+            const getGrossFromSplit = (idStr) => {
+                const s = parse(document.getElementById('sal' + idStr).value);
+                const b = parse(document.getElementById('bon' + idStr).value);
+                return (s * 12) + b;
+            };
+
+            const patterns = [
+                { id: 'A', name: 'Solo', inc: getNetFromSplit('A'), raw: getGrossFromSplit('A'), mul: parseFloat(document.getElementById('mulA').value), add: 0 },
+                { id: 'B', name: 'Dinks', inc: getNetFromSplit('B'), raw: getGrossFromSplit('B'), mul: parseFloat(document.getElementById('mulB').value), add: 0 },
+                { id: 'C', name: 'Fam', inc: getNetFromSplit('C'), raw: getGrossFromSplit('C'), mul: parseFloat(document.getElementById('mulC').value), add: parse(document.getElementById('addC').value) }
+            ];
+
+            const qols = [
+                { id: '1', name: 'Survival', cost: parse(document.getElementById('costL1').value) },
+                { id: '2', name: 'Comfort', cost: parse(document.getElementById('costL2').value) },
+                { id: '3', name: 'Ideal', cost: parse(document.getElementById('costL3').value) }
+            ];
+
+            document.getElementById('dispL1').innerText = fmtMoney(qols[0].cost);
+            document.getElementById('dispL2').innerText = fmtMoney(qols[1].cost);
+            document.getElementById('dispL3').innerText = fmtMoney(qols[2].cost);
+
+            const tbody = document.getElementById('matrixBody');
+            tbody.innerHTML = '';
+
+            let targetCell = null;
+            let targetPat = null;
+            let targetQol = null;
+
+            patterns.forEach(pat => {
+                const tr = document.createElement('tr');
+                const th = document.createElement('td');
+                // Show Gross (Net) in Header
+                th.innerHTML = `<b>${pat.name}</b><br><span style="font-size:0.7em; color:#7f8c8d;">額面:${fmtMoney(pat.raw)}</span><br><span style="font-size:0.8em; font-weight:bold;">手取:${fmtMoney(pat.inc)}</span>`;
+                th.style.background = '#f8f9f9';
+                tr.appendChild(th);
+
+                qols.forEach(qol => {
+                    const result = calculateScenario(currentAge, retirementAge, initialAsset, roi, inflation, annualPension, pensionStartAge, pat, qol, useStats);
+                    matrixData[`${pat.id}${qol.id}`] = result;
+
+                    const td = document.createElement('td');
+                    const isSafe = result.bankruptcyAge === null;
+                    td.className = isSafe ? 'status-safe' : 'status-danger';
+                    td.onclick = () => selectCell(pat, qol, td);
+
+                    let content = '';
+                    if (isSafe) {
+                        content = `<span class="cell-status">OK</span><span class="cell-val">${fmtMoney(result.finalAsset)}</span>`;
+                    } else {
+                        content = `<span class="cell-status">NG</span><span class="cell-val">Age ${result.bankruptcyAge}</span>`;
+                    }
+                    td.innerHTML = content;
+                    tr.appendChild(td);
+
+                    // Check if this is current selection
+                    if (pat.id === currentSel.patId && qol.id === currentSel.qolId) {
+                        targetCell = td;
+                        targetPat = pat;
+                        targetQol = qol;
+                    }
+                });
+                tbody.appendChild(tr);
+            });
+
+            // Restore active selection or default
+            if (targetCell) {
+                selectCell(targetPat, targetQol, targetCell);
+            } else {
+                // Fallback (e.g. init)
+                const firstRow = tbody.rows[0];
+                if (firstRow) selectCell(patterns[0], qols[0], firstRow.cells[1]);
+            }
+        }
+
+        // Feature: Actual Expenses
+        function toggleActuals() {
+            const el = document.getElementById('actualsPanel');
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function applyActuals() {
+            // True Burn (Yr) = 2,039,568
+            if (confirm('Apply True Burn Rate (2.04M/yr) to Survival (L1)?')) {
+                const input = document.getElementById('costL1');
+                input.value = "2,039,568";
+                updM(input, 'dC1');
+                runSimulation();
+            }
+        }
+
+        function calculateScenario(currentAge, retirementAge, initialAsset, roi, inflation, annualPension, pensionStartAge, pat, qol, useStats) {
+            let asset = initialAsset;
+            const labels = [];
+            const data = [];
+            let bankruptcyAge = null;
+
+            const annualBaseCost = qol.cost;
+            const annualCostRaw = (annualBaseCost * pat.mul) + pat.add;
+            const annualIncomeRaw = pat.inc;
+
+            for (let age = currentAge; age <= 100; age++) {
+                labels.push(age);
+                data.push(asset);
+
+                if (asset < 0 && bankruptcyAge === null) bankruptcyAge = age;
+
+                asset = asset * (1 + roi);
+
+                let yearIndex = age - currentAge;
+
+                // Income (w/ Stats)
+                let inc = 0;
+                if (age < retirementAge) {
+                    let wMul = useStats ? getWageMul(age) : 1.0;
+                    inc += annualIncomeRaw * wMul; // Salary usually grows with promotion/career, not pure inflation, but debatable. Keep as is.
+                }
+                if (age >= pensionStartAge) {
+                    // Apply Inflation to Pension (Indexation)
+                    let pensionInflated = annualPension * Math.pow(1 + inflation, yearIndex);
+                    inc += pensionInflated;
+                }
+
+                // Cost (Inflation + Stats)
+                let cMul = useStats ? getCostMul(age) : 1.0;
+                let cost = annualCostRaw * Math.pow(1 + inflation, yearIndex) * cMul;
+
+                asset += (inc - cost);
+            }
+
+            return { labels, data, bankruptcyAge, finalAsset: data[data.length - 1], patName: pat.name, qolName: qol.name };
+        }
+
+        function selectCell(pat, qol, cellElement) {
+            document.querySelectorAll('td').forEach(td => td.classList.remove('selected'));
+            if (cellElement) cellElement.classList.add('selected');
+
+            // Save state
+            currentSel = { patId: pat.id, qolId: qol.id };
+
+            const key = `${pat.id}${qol.id}`;
+            const res = matrixData[key];
+
+            document.getElementById('selectedScenarioTitle').innerText = `Simulation: ${pat.name} x ${qol.name}`;
+
+            if (chart) chart.destroy();
+            const ctx = document.getElementById('chart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: res.labels,
+                    datasets: [{
+                        label: 'Asset',
+                        data: res.data,
+                        borderColor: res.bankruptcyAge ? '#c0392b' : '#27ae60',
+                        backgroundColor: res.bankruptcyAge ? 'rgba(192, 57, 43, 0.1)' : 'rgba(39, 174, 96, 0.1)',
+                        fill: { target: 'origin', above: 'rgba(39, 174, 96, 0.1)', below: 'rgba(192, 57, 43, 0.1)' },
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHitRadius: 20,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { grid: { color: '#f0f0f0' }, ticks: { callback: v => v / 10000 + '万' } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(44, 62, 80, 0.9)',
+                            padding: 10,
+                            titleFont: { size: 13 },
+                            bodyFont: { size: 13, weight: 'bold' },
+                            displayColors: false,
+                            callbacks: {
+                                title: ctx => {
+                                    const age = ctx[0].label;
+                                    const year = 2025 + (parseInt(age) - 32);
+                                    return `Age ${age} (${year}年)`;
+                                },
+                                label: ctx => 'Asset: ' + fmt(Math.round(ctx.raw)) + ' 円'
+                            }
+                        },
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        window.onload = init;
+    </script>
+
+</body>
+
+</html>
