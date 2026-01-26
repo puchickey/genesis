@@ -73,7 +73,8 @@ https://drive.google.com/file/d/1dD0ltMO6BkSZGGqKx4fpqYvltE2tychg/view?usp=drive
 
 ---
 
-## 7. Version Control Policy
-*   セッション終了時は必ず `Git Operator` スキルを呼び出し、変更をコミットすること。
+## 7. Version Control Policy (Triggering Git Operator)
+*   **Task Based:** `active_tasks.md` の項目を完了したら、即座に `Git Operator` を呼び出し、そのタスク単位でコミットする（Atomic Commit）。
+*   **Session Based:** セッション終了時にも安全網（Safety Net）として必ずコミットする。
 
 
