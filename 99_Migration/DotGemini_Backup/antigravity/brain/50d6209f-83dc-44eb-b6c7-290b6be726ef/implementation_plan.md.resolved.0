@@ -1,0 +1,39 @@
+# Google Drive API Integration Plan
+
+## Goal
+Enable the AI assistant and local scripts to read the content of Google Docs (`.gdoc` files) directly from the user's Google Drive, allowing for seamless management without manual conversion.
+
+## User Actions Required
+To proceed, you (the User) need to obtain **OAuth 2.0 Credentials** from Google Cloud Platform.
+
+1.  **Create a Project**: Go to [Google Cloud Console](https://console.cloud.google.com/) and create a new project (e.g., "Personal-AI-Drive-Access").
+2.  **Enable API**: In the project, go to **APIs & Services > Library** and search for/enable **"Google Drive API"**.
+3.  **Config OAuth Consent Screen**:
+    *   Go to **OAuth consent screen**.
+    *   User Type: **External** (unless you have a G-Suite organization).
+    *   Fill in required fields (App name, email).
+    *   **Scopes**: Add `.../auth/drive.readonly` (or just `drive` for full access).
+    *   **Test Users**: Add your own Google email address (important!).
+4.  **Create Credentials**:
+    *   Go to **Credentials > Create Credentials > OAuth client ID**.
+    *   Application type: **Desktop app**.
+    *   Name: "Desktop Client".
+5.  **Download JSON**: Download the client configuration and save it as `credentials.json` in this workspace folder: `C:\Users\puchi\Desktop\antigravity`.
+
+## Proposed Changes
+
+### System Setup
+- Install Python libraries: `google-auth-oauthlib`, `google-api-python-client`.
+
+### [NEW] `drive_reader.py` (Script)
+A Python script that:
+1.  Authenticates using `credentials.json`.
+2.  Opens a browser window for the first-time user login.
+3.  Saves the session to `token.json` for future auto-login.
+4.  Accepts a `.gdoc` file path or ID.
+5.  Uses the Drive API `export` function to retrieve the document content as `text/plain` or `markdown`.
+
+## Verification Plan
+1.  User places `credentials.json`.
+2.  Run `python drive_reader.py "G:\マイドライブ\00_CORE\価値観\人生計画基本ドキュメント.gdoc"`.
+3.  Verify the script outputs the text content of the Life Plan document.

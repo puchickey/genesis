@@ -1,0 +1,82 @@
+GENESIS Architecture Specification v5.0 (Final MVP Edition)
+Document Type: Technical Specification
+Target System: GENESIS Autonomous Business Ecosystem
+Core Philosophy: Python Native, Identity-First, IDE-Driven Interface.
+1. High-Level Architecture (システム全体像)
+GENESISは、Google Cloud Run上で常駐する「脳（Brain）」が、GitHubリポジトリを「ホワイトボード」として利用し、あなた（Antigravity上のユーザー）と非同期でコミュニケーションを取りながらビジネスを構築するシステムです。
+graph TD
+   subgraph "Control Plane (GitHub Repo)"
+       Cmd[commands/user_directives.md] -->|Read| Brain
+       Brain -->|Write| Report[reports/daily_status.md]
+       Brain -->|Write| Code[src/new_project/...]
+   end
+
+   subgraph "The Brain (Google Cloud Run)"
+       Brain[GENESIS Core Logic]
+       Brain -->|Auth: Workload Identity| GCP_APIs
+   end
+
+   subgraph "The Hands (Google Cloud SDKs)"
+       GCP_APIs -->|Code Gen| VertexAI[Vertex AI (Jules/Gemini)]
+       GCP_APIs -->|Deploy| CloudBuild[Cloud Build]
+       GCP_APIs -->|Analyze| GA4[Google Analytics Data API]
+   end
+
+   subgraph "The Cockpit (Your Interface)"
+       Antigravity[Google Antigravity IDE] -->|Edit/Chat| Cmd
+       Antigravity -->|View| Report
+   end
+
+2. Component Specifications (技術スタック詳細)
+外部ツール（CLIラッパー等）は一切使用せず、Google公式のPython SDKのみで構築します。
+A. The Brain (中枢)
+* Service: Cloud Run (Service)
+* Runtime: Python 3.11+
+* Framework: FastAPI
+   * GitHub Webhookを受け取るためのエンドポイントと、定期実行（Cloud Scheduler）用のエンドポイントを持ちます。
+* Auth Strategy: Workload Identity
+   * JSONキーファイルは作成しません。Cloud RunのService Account (SA) に直接IAMロールを紐付けます。
+B. The Hands (実行部隊)
+CLIコマンド (gcloud, gemini) は使用せず、以下のPythonライブラリを使用します。
+1. Dev Hand (コード生成):
+   * Library: google-cloud-aiplatform (Vertex AI SDK)
+   * Model: gemini-1.5-pro (Code generation & logic)
+   * Action: プロンプトを受け取り、コード文字列を生成してGitHubにコミットします。
+2. Ops Hand (インフラ操作):
+   * Library: google-cloud-build, google-cloud-run
+   * Action: 生成されたコードを元に cloudbuild.yaml を作成し、Cloud Build APIを叩いてデプロイを実行します。
+3. Analyst Hand (分析):
+   * Library: google-analytics-data
+   * Action: GA4から「アクティブユーザー数」「イベント数」を取得します。
+C. The Interface (通信プロトコル)
+Antigravity（IDE）とGENESIS（Cloud Run）は、**「Markdownファイル」**を通じて会話します。
+* あなたからの命令: commands/user_directives.md
+   * 例: [ ] Idea: 確定申告の計算ツールを作って。ターゲットはフリーランス。
+* GENESISからの報告: reports/status.md
+   * 例: [x] MVP Deployed: https://project-a.web.app (Access: 45)
+3. Directory Structure (Monorepo)
+genesis-monorepo/
+├── commands/               # あなたからの指示書置き場
+│   └── user_directives.md
+├── reports/                # GENESISからの報告書置き場
+│   └── daily_status.md
+├── proposals/              # アイデア提案書
+├── projects/               # 各ビジネスのソースコード
+│   ├── project_a/
+│   └── project_b/
+└── genesis_brain/          # GENESIS本体のコード
+   ├── main.py             # FastAPI App
+   ├── agents/             # Jules/Gemini操作ロジック
+   ├── ops/                # Cloud Build操作ロジック
+   └── requirements.txt    # google-cloud-aiplatform, etc.
+
+4. Implementation Steps (セットアップ手順)
+1. GCPプロジェクト作成 & API有効化:
+   * Cloud Run, Cloud Build, Vertex AI, Google Analytics Data APIを有効化。
+2. Workload Identity設定:
+   * Service Accountを作成し、roles/aiplatform.user, roles/run.developer, roles/cloudbuild.builds.editor を付与。
+3. GENESIS Brainデプロイ:
+   * genesis_brain をCloud Runにデプロイ。
+4. GitHub Webhook設定:
+   * リポジトリへのPushイベントをGENESIS BrainのURLに通知するように設定。
+これで、あなたがAntigravityで commands/ フォルダのファイルを編集して保存するだけで、Cloud上のGENESISが動き出します。

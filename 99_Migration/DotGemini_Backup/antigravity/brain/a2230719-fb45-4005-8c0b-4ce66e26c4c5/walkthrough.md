@@ -1,0 +1,32 @@
+# GENESIS v5 - User Guide
+
+## System Overview
+GENESIS is now an autonomous agent running on Google Cloud Run.
+- **Brain**: Gemini 3.0 Pro Preview (Planning & Chat)
+- **Hands**: Gemini 2.5 Flash (Coding & Execution)
+- **URL**: `https://genesis-brain-160983561198.us-central1.run.app`
+- **Repository**: [puchickey/genesis-monorepo](https://github.com/puchickey/genesis-monorepo)
+
+## How to Operate
+You communicate via the GitHub Repository.
+
+### 1. Give a Directive
+Edit `commands/user_directives.md` in your local repository or on GitHub:
+
+```markdown
+# GENESIS User Directives
+
+- [ ] Create: A simple landing page for a coffee shop.
+```
+
+### 2. Trigger the Agent
+Just **Push** the changes to the `main` branch.
+The Webhook will automatically wake up the Brain.
+
+### 3. Check Status
+1.  **Logs**: Check Cloud Run logs to see the Brain planning and Hands generating code.
+    *   [View Logs in Google Cloud Console](https://console.cloud.google.com/run/detail/us-central1/genesis-brain/logs)
+2.  **Report**: (Coming Soon) The Brain will update `reports/daily_status.md` with the results.
+
+## Important Links
+- **Budget Alerts**: [Set up a 1000 JPY alert here](https://console.cloud.google.com/billing/budgets)

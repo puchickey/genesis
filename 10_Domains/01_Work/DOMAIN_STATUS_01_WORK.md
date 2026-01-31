@@ -20,7 +20,7 @@
     *   [ ] フルリモート案件のスクリーニング
     *   [ ] 職務経歴書 (BizReach Draft) の完成
 
-### 🧹 Project B: The Janitor (副業/実験)
-*   **Goal:** 経理データ洗浄スキルの資産化（GitHub Portfolio）。
-*   **Status:** ⏸️ **Planning** (Re-evaluating)
-*   **Hypothesis:** "Data Engineering for Accountants" - 経理とエンジニアの共通言語を持つ人材としてのポジショニング。
+### 🧹 Project B: Side Hustle (副業/実験)
+*   **Goal:** 経理実務以外のスキル資産化（収益化の種まき）。
+*   **Status:** ⏸️ **Planning** (Method TBD)
+*   **Hypothesis:** Pythonデータ洗浄はあくまで一案。「何が金になるか」を市場を見ながら模索するフェーズ。

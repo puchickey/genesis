@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Revised Folder Structure Proposal (v2).\nChanges:\n1.  **Isolation**: All AI-managed folders are now contained within `Genesis_OS` to avoid scanning root junk.\n2.  **Concrete Naming**: Changed abstract Project names to `仕事` (Work), `自己実現` (Self-Realization), `生活基盤` (Life Base).\n3.  **Activity Split**: Each domain is strictly divided into `00_維持活動` (Maintenance) and `01_投資活動` (Investment).",
+  "updatedAt":  "2025-12-28T05:19:39.029283400Z",
+  "version":  "2"
+}

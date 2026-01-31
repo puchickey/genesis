@@ -1,0 +1,12 @@
+{
+    "pages": 330,
+    "delay": 0.5,
+    "direction": "right",
+    "output_dir": "C:\\Users\\puchi\\Desktop\\antigravity\\kindle_pdf\\result",
+    "margins": {
+        "top": 105,
+        "bottom": 50,
+        "left": 55,
+        "right": 20
+    }
+}

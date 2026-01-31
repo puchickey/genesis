@@ -1,0 +1,35 @@
+# GENESIS v5 - User Guide
+
+## System Overview
+GENESIS is now an autonomous agent running on Google Cloud Run.
+- **Brain**: Gemini 3.0 Pro Preview (Planning & Chat)
+- **Hands**: Gemini 2.5 Flash (Coding & Execution)
+- **URL**: `https://genesis-brain-160983561198.us-central1.run.app`
+
+## How to Operate
+You do not interact with the Cloud Run URL directly. Instead, you communicate via GitHub (or local file simulation for now).
+
+### 1. Give a Directive
+Edit [genesis-monorepo/commands/user_directives.md](file:///c:/Users/puchi/Desktop/antigravity/genesis-monorepo/commands/user_directives.md):
+
+```markdown
+# GENESIS User Directives
+
+- [ ] Create: A simple landing page for a coffee shop.
+```
+
+### 2. Trigger the Agent
+*Currently, since we don't have a real GitHub Webhook connected to localhost, you need to manually trigger the webhook or push to a real repo.*
+
+**Manual Trigger (PowerShell):**
+```powershell
+Invoke-RestMethod -Uri "https://genesis-brain-160983561198.us-central1.run.app/webhook" -Method Post -ContentType "application/json" -Body '{"ref": "refs/heads/main", "commits": [{"modified": ["genesis-monorepo/commands/user_directives.md"]}]}'
+```
+
+### 3. Check Status
+The agent will process your request and (in the future) update [reports/daily_status.md](file:///c:/Users/puchi/Desktop/antigravity/genesis-monorepo/reports/daily_status.md).
+For now, you can check the Cloud Run logs in the GCP Console to see the "Brain" planning and "Hands" generating code.
+
+## Next Steps
+- Connect a real GitHub Repository to fully automate the webhook.
+- Implement the file write-back logic (so the agent can actually save the generated code to the repo).

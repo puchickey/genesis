@@ -1,0 +1,3 @@
+Found file: 人生計画基本ドキュメント (ID: 1iwxqruXWVq1ZgfM7moQiU_jZOgYR3-mwEVNLYd0sHaM, Type: application/vnd.google-apps.document)
+--- CONTENT START ---
+An error occurred: 'cp932' codec can't encode character '\ufeff' in position 0: illegal multibyte sequence

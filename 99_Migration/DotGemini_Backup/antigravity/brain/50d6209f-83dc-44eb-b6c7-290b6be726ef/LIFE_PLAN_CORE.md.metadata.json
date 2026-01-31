@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Draft of the simplified Life Plan document (`LIFE_PLAN_CORE.md`).\n- File Name: Changed from `.gdoc` to `LIFE_PLAN_CORE.md` (English/Markdown).\n- Content: Simplified complex metaphors into clear strategic statements.\n- Structure: Values -> Current Situation -> Strategy (3 Projects).\n- Ambiguities (to be addressed by user) are noted in comments or will be asked in the notification.",
+  "updatedAt":  "2025-12-28T07:04:23.506034700Z"
+}

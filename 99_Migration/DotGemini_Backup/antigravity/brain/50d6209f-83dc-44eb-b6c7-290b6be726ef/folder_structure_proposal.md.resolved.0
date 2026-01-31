@@ -1,0 +1,56 @@
+# Google Drive Organization Proposal
+
+Based on the analysis of your "Life Plan Basic Document", I propose the following directory structure. This design aims to mirror your "Life OS" (Logic Purity & Potential Maximization) and treat your life as a set of parallel projects.
+
+## Core Philosophy
+- **Separation of Concerns**: Distinct separation between "Constitution" (Values), "Execution" (Projects), and "Library" (Resources).
+- **AI-Native**: A dedicated `00_AI_Context` folder to store current status, active tasks, and memory for the AI, allowing me to quickly grasp the context without reading every file.
+- **Three Pillars**: Explicitly mapping the three projects (A, B, C) to the folder structure.
+
+## Proposed Structure (Root: `G:\マイドライブ`)
+
+```plaintext
+00_AI_CONTEXT/                  <-- [NEW] AI's working memory
+    │  current_status.md        (Overall snapshot of 3 projects)
+    │  active_tasks.md          (Kanban-like task list)
+    └─ memories/                (Logs of determining facts/decisions)
+
+00_CORE/                        <-- [EXISTING] Your "OS" Kernel
+    │  01_Values/               (Mission, Vision, "Logic Purity")
+    │  02_LifePlan/             (The Master Plan, strategy docs)
+    └─ 03_SystemDesign/         (Rules, habits, routines design)
+
+01_PROJECTS/                    <-- [NEW] The "Execution Environment"
+    ├── ProjectA_WorkCompression/   (Work: "The Efficient Artisan")
+    │   ├── 01_Manuals/         (To auto-pilot tasks)
+    │   ├── 02_Scripts/         (Automation tools)
+    │   └── 03_Negotiation/     (Resources for compressing hours)
+    │
+    ├── ProjectB_ArchitectExp/      (Self: "The Architect")
+    │   ├── 01_Hypotheses/      (Ideas to test)
+    │   ├── 02_Experiments/     (Blog, creations, outputs)
+    │   └── 03_Analysis/        (Feedback loop data)
+    │
+    └── ProjectC_LifeSystem/        (Life: "Stability Base")
+        ├── 01_Health/          (Sleep, Exercise logs)
+        ├── 02_Partnership/     (Criteria, dating plans)
+        └── 03_Finance/         (Budget, asset management)
+
+02_RESOURCES/                   <-- [NEW] "Library" of knowledge
+    ├── Books/                  (Summaries, highlights)
+    ├── Tools/                  (Software, licenses)
+    └── References/             (Scientific papers, articles)
+
+03_ARCHIVES/                    <-- Old projects/files
+    └── 2024_and_older/
+```
+
+## AI Collaboration Workflow
+1.  **Weekly Update**: We update `00_AI_CONTEXT/current_status.md` to reflect progress on A, B, and C.
+2.  **Task Execution**: When you want to work on "Project B", I check `ProjectB_ArchitectExp` for context and `active_tasks.md` for next steps.
+3.  **Review**: We use `00_CORE` as the "Constitution" to judge if our actions align with "Logic Purity".
+
+## Next Steps
+If this structure looks good to you, I will:
+1.  Create the empty folder skeleton in your Google Drive.
+2.  Generate the initial `00_AI_CONTEXT/current_status.md` based on the Life Plan.

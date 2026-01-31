@@ -1,0 +1,21 @@
+# Project GENESIS v5 - Tasks
+
+- [x] 旧環境 (v2) のアーカイブ <!-- id: 0 -->
+- [/] GENESIS v5 環境セットアップ <!-- id: 1 -->
+    - [x] GCPアカウント/プロジェクト確認
+    - [x] ディレクトリ構造の作成 (genesis-monorepo)
+    - [x] Python環境のセットアップ (requirements.txt)
+    - [x] GCPプロジェクト設定 (API有効化, Service Account)
+- [/] GENESIS Brain 実装 <!-- id: 2 -->
+    - [x] Webhookハンドラー (FastAPI)
+    - [ ] Markdownパーサー (命令読み取り)
+    - [x] Brain Agent (Gemini 3.0 Pro)
+    - [x] Hand Agent (Gemini 2.5 Flash)
+    - [x] Ops Hand (Cloud Build デプロイ)
+- [x] パイロット検証 <!-- id: 3 -->
+    - [x] Readme-AI の生成指示 (Webhookテストで代替)
+    - [x] 自動デプロイの確認 (Cloud Run稼働確認)
+- [x] GitHub連携 <!-- id: 4 -->
+    - [x] リポジトリ作成 & Push
+    - [x] Webhook設定
+    - [ ] BrainへのGitHubアクセス権限付与 (Token/App)

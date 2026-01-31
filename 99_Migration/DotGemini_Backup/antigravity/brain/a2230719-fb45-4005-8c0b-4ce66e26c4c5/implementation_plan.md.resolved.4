@@ -1,0 +1,60 @@
+# Project GENESIS v2 - Activation Plan
+
+## Goal
+To initialize the "GENESIS" autonomous business ecosystem and launch the first profit-generating pilot project. This plan outlines the construction of the central management dashboard ("Genesis Core") and proposes candidate Micro-SaaS ventures for the first "Explorer" cycle.
+
+## User Review Required
+> [!NOTE]
+> **Decision Made**: **Option A: "Readme-AI"** has been selected as the pilot venture.
+
+## Proposed Architecture: "Genesis Core" (Primary MVP)
+We will build the central command center to manage the entire portfolio of experiments.
+- **Frontend**: Next.js (App Router) + Tailwind CSS + Shadcn UI
+- **Backend**: Next.js API Routes (Serverless)
+- **Database**: Supabase (PostgreSQL) - Storing Projects, Ideas, and Logs.
+- **AI Engine**: **Google Gemini 1.5 Pro / Flash** (Central Brain)
+- **Analytics**: **Google Analytics 4 (GA4)** + **BigQuery** (Data Warehouse)
+    - *Reason*: To leverage the Google ecosystem and enable deep analysis with Gemini.
+- **Features**:
+    - **Dashboard**: High-level metrics (Active Projects, Total Revenue, Success Rate).
+    - **Project Manager**: Create, Edit, Archive projects (e.g., Readme-AI).
+    - **Idea Bank**: Store and rank new business ideas.
+    - **Experiment Logs**: Track daily progress and outcomes of each project.
+
+## Phase 1: Infrastructure Setup
+We will establish the "Factory" that produces businesses.
+- [ ] Initialize Next.js project with TypeScript & Tailwind.
+- [ ] Setup Supabase project (Auth + DB).
+- [ ] Implement "Genesis Dashboard" (UI to view project status, metrics, and logs).
+- [ ] Create "Explorer Agent" skeleton (Python scripts for trend analysis).
+
+## Phase 2: Pilot Venture Options (Select One)
+To test the "Small Start & Fail Fast" principle, we need a pilot project.
+
+### Option A: **"Readme-AI" (Developer Tool)**
+- **Concept**: A CLI/Web tool that reads a codebase and generates a perfect `README.md` using LLMs.
+- **Target**: Developers, Open Source contributors.
+- **Monetization**: Freemium (Basic free, Pro templates/hosting paid).
+- **Why**: High demand, clear "Pain Point", easy to market on Twitter/Reddit. Uses **Gemini API** for content generation.
+
+### Option B: **"PrivacyScrub" (Image Utility)**
+- **Concept**: A drag-and-drop tool to remove EXIF/Metadata from images before sharing online.
+- **Target**: Privacy-conscious users, photographers.
+- **Monetization**: Free (Ad-supported) or Bulk processing (Paid).
+- **Why**: Simple logic, privacy is a trending topic, low maintenance.
+
+### Option C: **"TrendDigest" (Niche Newsletter)**
+- **Concept**: Automated newsletter that aggregates "AI Tools for X" (e.g., Designers, Writers) daily.
+- **Target**: Professionals trying to keep up with AI.
+- **Monetization**: Affiliate links, Sponsorships.
+- **Why**: "Digital Content" category, fully automatable content pipeline.
+
+## Verification Plan
+### Automated Tests
+- **Unit Tests**: Jest/Vitest for utility functions (e.g., data parsers).
+- **E2E Tests**: Playwright to verify the Dashboard loads and Auth works.
+
+### Manual Verification
+- **Deployment**: Verify Vercel deployment is successful.
+- **Supabase Connection**: Verify data can be read/written to the DB.
+- **Pilot MVP**: Verify the core function of the selected pilot works (e.g., generates a Readme, cleans an image).
