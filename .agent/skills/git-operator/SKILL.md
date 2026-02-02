@@ -24,13 +24,20 @@ git commit -m "feat(category): Summary" -m "- Detail 1"
 ```
 
 ### Step 2: Commit Message Standard
+**必ず「日本語 (Japanese)」で記述すること。**
 「何をしたか」だけでなく「なぜしたか」がわかるように書く。
+
 *   **Prefix:**
     *   `feat`: 新機能・新ファイル (New Skill, New Doc)
     *   `update`: 内容更新 (Log, Status Update)
     *   `fix`: 修正 (Typos, Bug fix)
     *   `docs`: ドキュメント整理
-*   **Format:** `prefix(scope): Subject`
+*   **Format:** `prefix(scope): 日本語の要約`
+    *   *Example:* `update(finance): 2026年の予算案をJカーブ戦略に基づいて修正`
+
+### Step 3: Bulk Commit Rule (まとめ保存時)
+朝のアーカイブ処理など、複数の異なる変更をまとめてコミットする場合は、`-m` オプションを複数回使用して詳細を記録する。
+*   `git commit -m "log(daily): 1月30日の活動アーカイブ" -m "- 予算案の修正 (Investment削減)" -m "- プロフィールの更新 (住居要件の追加)"`
 
 ### Step 3: Error Handling
 Google Drive同期中のファイルロックにより `git commit` が失敗する場合がある。
