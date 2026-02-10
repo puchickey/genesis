@@ -12,7 +12,7 @@
 
 - [x] **[LifeBase]** ライフライン手配 (電気・ガス・水道)
 - [/] **[LifeBase]** ネット環境 (つなぎ)
-    *   *Action*: 楽天モバイル (eSIM) 契約予定。
+    *   *Action*: 楽天モバイル (eSIM) 開通済み。テザリング運用中 (〜3/3)。
 - [ ] **[LifeBase]** 家電手配 (転居後検討)
 - [/] **[Strategy]** Passive Career Search
     *   *Action*: エージェントへの要望伝達（条件定義）のみ実施。
