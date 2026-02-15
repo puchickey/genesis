@@ -14,11 +14,12 @@
 
 ### 🦄 Project A: Unicorn Hunting (転職)
 *   **Goal:** "Full Remote" x "High Tech" 経理職への転身。
-*   **Status:** 🏃 **In Progress**
+*   **Status:** ⏸️ **Paused / Monitoring**
+*   **Policy:** Activeな活動は停止。エージェントからの「掘り出し物」待ち。
 *   **Actions:**
     *   [x] Green登録完了
-    *   [ ] フルリモート案件のスクリーニング
-    *   [ ] 職務経歴書 (BizReach Draft) の完成
+    *   [x] 職務経歴書 (BizReach Draft) 完成済
+    *   [ ] 案件モニタリング (週1回程度)
 
 ### 🧹 Project B: Side Hustle (副業/実験)
 *   **Goal:** 経理実務以外のスキル資産化（収益化の種まき）。

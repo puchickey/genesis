@@ -13,12 +13,19 @@
 - [x] **[LifeBase]** ライフライン手配 (電気・ガス・水道)
 - [/] **[LifeBase]** ネット環境 (つなぎ)
     *   *Action*: 楽天モバイル (eSIM) 開通済み。テザリング運用中 (〜3/3)。
-- [ ] **[LifeBase]** 家電手配 (転居後検討)
+- [/] **[LifeBase]** 家電手配 (転居後検討)
+    *   *Done*: ロボット掃除機導入済。
+    *   *Pending*: 調理家電は自炊しつつ検討。
 - [/] **[Strategy]** Passive Career Search
     *   *Action*: エージェントへの要望伝達（条件定義）のみ実施。
     *   *Focus*: 本業転職よりも「副業（Side Hustle）」にリソース集中。
 
 ## ✅ Done / WontDo (完了・廃止)
+- [x] **[Housing]** 物件B (Yusse) 入居完了
+- [x] **[Admin]** 転入届提出完了
+- [x] **[Finance]** 積立設定変更 (完了として扱う)
+- [x] **[Skill]** クラウドソーシングアカウント確認 (Lancers/CrowdWorks既存アカあり)
+- [x] **[Clothes]** シワ取りスプレー試用 (タスク化不要・完了)
 - [x] **Project: Scientific Life Simulation (Scoring)**
 - [x] **Decision: Investment Policy**
     *   *Result*: 「貯金を崩してでも経験（ジム・旅行）に使う」と合意。

@@ -9,5 +9,9 @@
 ## 🔄 Maintenance (維持活動)
 *   **Status:** 🌑 **Dormant** (休眠中)
 
-## 🚀 Investment (投資活動)
-*   **Status:** **None** (全停止)
+## 🚀 Investment (投資活動) - *Project B: Side Hustle*
+*   **Status:** 🟢 **Active** (Idea Generation Phase)
+*   **Focus:**
+    *   **Resource:** 既存資産（経理知識 × AI/Automation）の組み合わせ。
+    *   **Method:** "Young Method" によるアイデア出しと高速検証 (PDCA)。
+    *   **Content:** Project C (Social connection through output) もここに包含する。

@@ -64,15 +64,16 @@
 - **Status:** ⚠️ **WARNING (Health Risk)**
     - *Note*: 1年前のうつ病からの回復期。「踏ん張りがきかない」状態を前提に行動制限を設けること。無理は禁物。
 
-- **Focus:** **Property B (Yusse)** への入居と、生産環境（自炊/湯船）の構築。
-- **Status:** 🔴 **Critical Action (Contract)**
-- **Next Action:** 不動産屋への連絡。
+- **Focus:** **Property B (Yusse)** へ入居完了。生産環境（自炊/湯船）の構築フェーズ。
+- **Status:** 🟢 **Resident (Settled)**
+- **Next Action:** ネット環境整備と自炊習慣の確立。
 - **Finance:** **Investment Cut**. 積立を月4万に減らし、浮いた資金で家賃増(+1万)と時短家電を賄う。
 
 ---
 
 ## 📝 Immediate Tasks (直近のタスク)
 ## 📝 Immediate Tasks (直近のタスク)
-- [ ] **[Housing]** 物件B (Yusse) への入居申し込み
-- [ ] **[Finance]** 証券口座/クレカ積立設定の変更 (月14万 -> 4万)
-- [ ] **[Skill]** ココナラ/Lancers等のプラットフォーム登録 (Sales不要のマネタイズ準備)
+- [/] **[LifeBase]** ネット環境 (つなぎ・テザリング中)
+- [/] **[LifeBase]** 調理家電の検討 (自炊しながら)
+- [/] **[Skill]** Ops/Automationスキル(Python/GAS)独学
+- [/] **[Project B]** 「最初の実験」テーマの決定

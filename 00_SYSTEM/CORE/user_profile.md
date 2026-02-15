@@ -37,6 +37,19 @@
     *   **Health:** 労働投入量の増加（残業・副業バイト）による解決は不可。
     *   **Environment:** 現職では「効率化＝給与UP」の相関がない。
 
+## 8. Creative History (The Deep Roots)
+*   **Childhood (Elementary):** 休み時間を全て捧げてノートに物語を書き続けた2年間の没入体験（Introverted Creator）。
+*   **University:** ニコニコ動画で「ニコマス（NovelsM@ster）」動画を投稿。テキストによる二次創作文化への参加経験。
+*   **Complex:** 「面白いことをしたい」という憧れと、「本物の才能（天才）には勝てない」という諦めの葛藤がある。
+*   **Core Drive:** 誰かに評価されなくても、「設定を作って妄想する（System Building & Roleplay）」こと自体が快感。
+
+## 9. Next Actions (Immediate)
+*   [ ] Complete Internet Setup for Yusse.
+*   [ ] Research Cooking Appliances (Rice Cooker / Microwave).
+*   [ ] Experiment with "Project B" (Side Hustle) ideas:
+    *   Track 1: Engineering Life (Process Economy)
+    *   Track 2: Administrative Romance (Creative Outlet)
+
 ## 💼 Career & Skills (The Weapon)
 *   **Core Role:** 経理実務 × 構造化・効率化
 *   **Tool Stack (手に馴染んだ武器):**
