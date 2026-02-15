@@ -20,6 +20,11 @@
     *   *Action*: エージェントへの要望伝達（条件定義）のみ実施。
     *   *Focus*: 本業転職よりも「副業（Side Hustle）」にリソース集中。
 
+## 📜 Active Protocols
+*   **[Constraint] Log Creation (Journaling Clerk):**
+    *   **Rule:** 新しい日（New Day）の日記を作成する際は、必ず `Journaling Clerk` スキルを使用すること。
+    *   **Prohibited:** `write_to_file` で直接 `YYYY-MM-DD.md` を作成する行為（`01_ARCHIVE_TRIGGER` がスキップされ、コミット漏れが発生するため）。
+
 ## ✅ Done / WontDo (完了・廃止)
 - [x] **[Housing]** 物件B (Yusse) 入居完了
 - [x] **[Admin]** 転入届提出完了
