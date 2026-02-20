@@ -32,6 +32,7 @@ To support this, please research the following topic objectively.
 ## Output Format
 *   Verdict: [Go / No Go / Unclear]
 *   Evidence Table: [Source URL | Main/Finding | Date]
+*   **Language: Output the entire report in Japanese (日本語).**
 ```
 
 ### 3. Execution
