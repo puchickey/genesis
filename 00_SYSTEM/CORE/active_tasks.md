@@ -19,6 +19,8 @@
 - [/] **[Strategy]** Passive Career Search
     *   *Action*: エージェントへの要望伝達（条件定義）のみ実施。
     *   *Focus*: 本業転職よりも「副業（Side Hustle）」にリソース集中。
+- [x] **[LifeBase/Expedition]** 理想の居住環境と自然の探索（旅行計画）
+    *   *Action*: `Travel_Expedition.md` にて候補地の蓄積と評価を開始。`202603_Shimanami_Dogo_Plan.md` を作成完了。
 
 ## 📜 Active Protocols
 *   **[Constraint] Log Creation (Journaling Clerk):**
