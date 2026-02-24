@@ -2,7 +2,7 @@
 **Layer:** L2 Tactics
 
 ## 📥 Inbox (未分類・思いつき)
-- 
+- [備忘] Ops/Automationスキル(Python/GAS)独学（※アイデア段階）
 
 ## 📋 To Do (これからやる)
 - [ ] **Pending**: 次のアクションまで特になし
@@ -13,12 +13,11 @@
 - [x] **[LifeBase]** ライフライン手配 (電気・ガス・水道)
 - [/] **[LifeBase]** ネット環境 (つなぎ)
     *   *Action*: 楽天モバイル (eSIM) 開通済み。テザリング運用中 (〜3/3)。
-- [/] **[LifeBase]** 家電手配 (転居後検討)
-    *   *Done*: ロボット掃除機導入済。
-    *   *Pending*: 調理家電は自炊しつつ検討。
+- [x] **[LifeBase]** 家電手配 (転居後検討)
+    *   *Done*: ロボット掃除機導入済。自動調理家電の追加導入は一旦保留し現状でトライ。
 - [/] **[Strategy]** Passive Career Search
-    *   *Action*: エージェントへの要望伝達（条件定義）のみ実施。
-    *   *Focus*: 本業転職よりも「副業（Side Hustle）」にリソース集中。
+    *   *Action*: 要望は未伝達（以前の条件のままメルマガを受信している状態）。
+    *   *Focus*: 能動的な転職活動は停止中で、副業（Side Hustle）にリソースを集中。
 - [x] **[LifeBase/Expedition]** 理想の居住環境と自然の探索（旅行計画）
     *   *Action*: `Travel_Expedition.md` にて候補地の蓄積と評価を開始。`202603_Shimanami_Dogo_Plan.md` を作成完了。
 

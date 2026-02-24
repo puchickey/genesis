@@ -41,9 +41,9 @@
 - **Status:** 🟢 Stable
 
 #### [投資活動] (Investment) - *Project A: Tech Nomad (Bridging)*
-- **Focus:** **Passive Search (待ち)**。条件: 600万/Full Remote。
+- **Focus:** **Passive Search (放置状態)**。以前の条件のままメルマガのみ受信中。
 - **Status:** 🔵 Passive
-- **Next Action:** Ops/Automationスキル（Python/GAS）の独学強化。転職よりも「現職での効率化」で時間を捻出する。
+- **Next Action:** （必要が生じれば）条件のアップデート。現在は副業に注力するため一旦凍結。Ops/Automationスキル強化はアイデアとしてInbox行き。
 
 ### 🎨 03_自己実現 (Self-Realization)
 *目的: 建築家としての創造と、本質の検証*
@@ -74,6 +74,5 @@
 ## 📝 Immediate Tasks (直近のタスク)
 ## 📝 Immediate Tasks (直近のタスク)
 - [/] **[LifeBase]** ネット環境 (つなぎ・テザリング中)
-- [/] **[LifeBase]** 調理家電の検討 (自炊しながら)
-- [/] **[Skill]** Ops/Automationスキル(Python/GAS)独学
+- [x] **[LifeBase]** 調理家電の検討 (いったん保留)
 - [/] **[Project B]** 「最初の実験」テーマの決定
