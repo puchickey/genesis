@@ -36,7 +36,7 @@
 
 ## 🔄 Loop / Exit
 
-*   **ADOPT:** フレーム確定。結果を `Note_Project_Setup.md` 等に反映して終了。
+*   **ADOPT:** フレーム確定。結果を `note/Note_Project_Setup.md` 等に反映して終了。
 *   **RETRY:** 素材の掛け合わせを変えて Phase 1 へ戻る。
     > Load: `procedures/01_FRAME_GENERATION.md`
 *   **DROP:** その候補を破棄し、残りの候補を評価。全滅なら Phase 1 へ。

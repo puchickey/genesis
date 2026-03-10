@@ -6,7 +6,7 @@
 ## 🔍 Step 1: 素材の動的ロード
 以下のファイルを読み込み、素材を抽出する:
 *   `G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\user_profile.md` — 属性・スキル・経歴・価値観
-*   `G:\マイドライブ\Genesis_OS\10_Domains\03_Creation\01_投資活動\Note_Project_Setup.md` — 既存のコンテンツ方針
+*   `G:\マイドライブ\Genesis_OS\10_Domains\03_Creation\01_投資活動\note\Note_Project_Setup.md` — 既存のコンテンツ方針
 
 ⚠️ プロフィール情報をこのファイル内にハードコードしないこと。常に上記から最新の情報を取得する。
 
