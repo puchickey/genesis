@@ -72,7 +72,6 @@
 ---
 
 ## 📝 Immediate Tasks (直近のタスク)
-## 📝 Immediate Tasks (直近のタスク)
 - [/] **[LifeBase]** ネット環境 (つなぎ・テザリング中)
 - [x] **[LifeBase]** 調理家電の検討 (いったん保留)
-- [/] **[Project B]** 「最初の実験」テーマの決定
+- [/] **[Project B]** 第2フェーズの実験：「非エンジニア向けのAntigravity（エージェント自動化）布教」の開始
