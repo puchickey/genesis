@@ -13,7 +13,7 @@
 ## 🏃 Active Tasks
 *(現在稼働中のエージェントタスクはここに記載)*
 
-- *No active background tasks currently.*
+- [Running] Task-001: Genesis OS リポジトリ全体調査レポート (Assignee: Jules) Target: puchickey/genesis
 
 ## ✅ Completed Tasks
 *(直近完了したタスクのサマリー)*
