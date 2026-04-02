@@ -24,10 +24,17 @@ Read the user profile and life plan to understand current constraints and long-t
 - Load context from: `G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\LIFE_PLAN_CORE.md`
 
 ## 4. Check Current Status
-Read the active tasks and current status to identify immediate priorities.
+Read the active tasks, current status, and multi-agent registry to identify priorities and background processes.
 
 - Load context from: `G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\current_status.md`
 - Load context from: `G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\active_tasks.md`
+- Load context from: `G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\agent_registry.md`
 
-## 5. Report Ready State
-Summarize the loaded context and ask for the next directive based on `active_tasks.md`.
+## 5. Check Agent Inbox
+Check if there are any unread reports from external agents (Jules, Gemini CLI).
+
+// turbo-all
+Get-ChildItem -Path "G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\inbox" -Filter "*.md" | Select-Object -First 5
+
+## 6. Report Ready State
+Summarize the loaded context, report any completed background tasks found in the inbox, and ask for the next directive based on `active_tasks.md`.
