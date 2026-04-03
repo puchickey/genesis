@@ -1,6 +1,0 @@
-{
-  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary":  "Migrating the Kindle to PDF tool from a CLI script to a GUI application using Tkinter.\nFeatures:\n- GUI for settings (Pages, Margins, Delay, Direction).\n- Specific output directory: `C:\\Users\\puchi\\Desktop\\antigravity\\kindle_pdf`.\n- \"Get Coordinates\" buttons with a 3-second delay timer for easy measurement.\n- Progress bar and log text area.",
-  "updatedAt":  "2026-01-03T16:13:42.184510200Z",
-  "version":  "1"
-}

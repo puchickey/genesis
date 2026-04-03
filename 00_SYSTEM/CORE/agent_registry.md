@@ -13,7 +13,9 @@
 ## 🏃 Active Tasks
 *(現在稼働中のエージェントタスクはここに記載)*
 
-- [Running] Task-001: Genesis OS リポジトリ全体調査レポート (Assignee: Jules) Target: puchickey/genesis
+- [Done] Task-001: Genesis OS リポジトリ全体調査レポート (Assignee: Jules) Target: puchickey/genesis
+- [Done] Task-002: Jules CLI 調査・インストール・Coordinator統合 (Assignee: Gemini CLI) Target: genesis_coordinator.py
+- [Running] Task-003: リポジトリ分離 Layer A 整備 (Assignee: Gemini CLI) Target: .gitignore, genesis_coordinator.py
 
 ## ✅ Completed Tasks
 *(直近完了したタスクのサマリー)*

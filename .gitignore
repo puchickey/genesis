@@ -1,11 +1,21 @@
+# Git backup / temp
+.git.bak_cloud/
+genesis_auto_sync.py
+
 # Personal Data (Layer B - Local Only)
 10_Domains/
 20_Inventory/
+99_Migration/
+03_Creation/
+05_Resources/
 00_SYSTEM/CORE/memories/
 00_SYSTEM/CORE/user_profile.md
 00_SYSTEM/CORE/LIFE_PLAN_CORE.md
 00_SYSTEM/CORE/current_status.md
 00_SYSTEM/CORE/active_tasks.md
+00_SYSTEM/CORE/GENESIS_AI_INSTRUCTION.md
+00_SYSTEM/Automation/
+00_SYSTEM/Resource/
 
 # Temp / Log files
 *.txt
