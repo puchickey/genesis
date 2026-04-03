@@ -19,14 +19,17 @@ genesis_auto_sync.py
 
 # Temp / Log files
 *.txt
+!README.txt
 *.log
 *.html
+
+# One-off scripts (root level)
 find_large.py
 find_loose.py
-iroha_api.json
-sync_log.txt
-objects.txt
-pack.txt
+
+# Temporary HTML/JSON scraping files
+iroha_*.html
+iroha_*.json
 
 # Large binary files
 *.pdf
