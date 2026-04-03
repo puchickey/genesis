@@ -30,11 +30,19 @@ Read the active tasks, current status, and multi-agent registry to identify prio
 - Load context from: `G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\active_tasks.md`
 - Load context from: `G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\agent_registry.md`
 
-## 5. Check Agent Inbox
+## 5. Check Agent Inbox (最優先)
 Check if there are any unread reports from external agents (Jules, Gemini CLI).
+If reports exist, **summarize and report them to the user BEFORE anything else.**
 
 // turbo-all
 Get-ChildItem -Path "G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE\inbox" -Filter "*.md" | Select-Object -First 5
 
 ## 6. Report Ready State
 Summarize the loaded context, report any completed background tasks found in the inbox, and ask for the next directive based on `active_tasks.md`.
+
+---
+
+## Mid-Session Rule: タスク完了時の inbox 確認
+**Trigger:** 会話中に何かひとつの話題・タスクが完了し、「次は何をしますか？」と聞く直前。
+**Action:** `inbox/` を確認し、新着レポートがあれば「そういえば、裏で走らせていた作業が完了していました」と自然に報告する。
+**目的:** ユーザーに確認の手間をかけず、会話のテンポも崩さない。

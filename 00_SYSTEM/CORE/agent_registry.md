@@ -15,7 +15,9 @@
 
 - [Done] Task-001: Genesis OS リポジトリ全体調査レポート (Assignee: Jules) Target: puchickey/genesis
 - [Done] Task-002: Jules CLI 調査・インストール・Coordinator統合 (Assignee: Gemini CLI) Target: genesis_coordinator.py
-- [Running] Task-003: リポジトリ分離 Layer A 整備 (Assignee: Gemini CLI) Target: .gitignore, genesis_coordinator.py
+- [Done] Task-003: リポジトリ分離 Layer A 整備 (Assignee: Gemini CLI + Antigravity) Target: .gitignore, genesis_coordinator.py
+- [Done] Task-004: Coordinator v2.0 安定化 (Assignee: Antigravity) Target: genesis_coordinator.py, スタートアップ登録
+- [Running] Task-005: リポジトリクリーンアップ (Assignee: Jules) Target: puchickey/genesis - ルート一時ファイル削除, テストスクリプト分離, .gitignore整備
 
 ## ✅ Completed Tasks
 *(直近完了したタスクのサマリー)*

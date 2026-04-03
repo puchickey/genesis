@@ -1,44 +1,65 @@
-# JULES_TASK: Genesis OS リポジトリ全体調査レポートの作成
+# JULES_TASK: リポジトリクリーンアップ（Task-005）
 
-## Context (背景)
-Genesis OS は個人の生活・仕事・創作活動を一元管理するファイルベースのOSである。
-最近、マルチエージェント統合環境（Antigravity / Gemini CLI / Jules の連携基盤）を追加した。
-現在、リポジトリ全体の構造や各ファイルの役割が体系的にまとまっていないため、全体像を把握するための調査レポートが必要である。
+## Context
+前回の調査レポート（`00_SYSTEM/CORE/inbox/jules_report_repo_analysis.md`）の「設計上の懸念点・改善提案」セクションに基づき、リポジトリの整理を行う。
+Genesis OS は Google Drive 上で運用されており、GitHub（`puchickey/genesis`）にはLayer A（公開可能なインフラ）のみがプッシュされる。
 
-## Goal (ゴール)
-リポジトリ内の**全てのディレクトリとファイル**を走査し、以下の情報を網羅した**調査レポート（Markdown）**を作成せよ。
+## Goal
+以下の3つのクリーンアップを実行する。**コードの変更（ロジックの修正）は行わず、ファイルの移動・削除・.gitignore更新のみ**を行うこと。
 
-## Output Requirements (出力要件)
+### 1. ルートディレクトリの一時ファイル削除
+以下のファイルをリポジトリのルートから**削除**する（`git rm`）:
+- `find_large.py`
+- `find_loose.py`
+- `genesis_auto_sync.py`（※ `00_SYSTEM/Automation/genesis_auto_sync.py` に同等品があるため重複）
+- `objects.txt`
+- `pack.txt`
+- `sync_log.txt`
+- `tree.txt`（存在する場合）
+- `tree_clean.txt`（存在する場合）
+- `iroha_api.json`
+- `iroha_articles.html`
+- `iroha_page.html`
+- `iroha_page2.html`
 
-### 1. ディレクトリツリー
-- リポジトリ全体のディレクトリ構造を `tree` 形式で出力すること。
-- `.git` ディレクトリは除外すること。
+### 2. テストスクリプトの分離
+`.agent/scripts/` 内のテスト用スクリプトを `.agent/scripts/tests/` ディレクトリに移動する:
+- `test_antigravity_cdp.py` → `.agent/scripts/tests/`
+- `test_auto_type.py` → `.agent/scripts/tests/`
+- `test_daigo_click.py` → `.agent/scripts/tests/`
+- `test_edge_daigo.py` → `.agent/scripts/tests/`
+- `debug_cdp.py` → `.agent/scripts/tests/`
 
-### 2. ファイル一覧と概要
-以下のカテゴリに分けて、各ファイルの**目的・内容の要約（1〜2行）**を記載すること。
+`.agent/scripts/tests/` ディレクトリが存在しない場合は新規作成すること。
 
-| カテゴリ | 対象 |
-|:--|:--|
-| System Core | `00_SYSTEM/CORE/` 配下の全ファイル |
-| Agent Scripts | `.agent/scripts/` 配下の全ファイル |
-| Agent Skills | `.agent/skills/` 配下の全SKILL.md |
-| Agent Workflows | `.agent/workflows/` 配下の全ファイル |
-| Domain Files | `10_Domains/` 配下の主要ファイル |
-| Inventory | `20_Inventory/` 配下の主要ファイル |
-| Root Config | ルート直下の設定ファイル（GEMINI.md 等） |
+### 3. .gitignore の追加整備
+`.gitignore` に以下のパターンを追加する（まだ含まれていないもののみ）:
+```
+# Temporary output files
+*.txt
+!README.txt
+objects.txt
+pack.txt
+sync_log.txt
+tree.txt
+tree_clean.txt
 
-### 3. 設計上の懸念点・改善提案
-ファイルを読んだ上で気づいた以下の点を列挙すること。
-- **重複**: 同じ内容が複数ファイルに書かれている箇所
-- **不整合**: ファイル間で矛盾する記述
-- **不要ファイル**: 明らかにテスト用・一時的で削除すべきファイル
-- **命名規則の乱れ**: ファイル名やディレクトリ名の一貫性の欠如
+# Temporary HTML/JSON scraping files
+iroha_*.html
+iroha_*.json
 
-## Output Format (出力形式)
-- ファイル名: `00_SYSTEM/CORE/inbox/jules_report_repo_analysis.md`
-- 形式: Markdown
-- 言語: 日本語
+# One-off scripts (root level)
+find_large.py
+find_loose.py
+```
 
-## Constraints (制約)
-- **コードの変更は一切行わないこと。** 今回のタスクは調査・レポートのみ。
-- レポートファイルの作成のみをPull Requestとして提出すること。
+## Output
+- コード修正のPull Requestを作成すること
+- PRの説明に、削除したファイル一覧と移動したファイル一覧を記載すること
+- 結果レポートを `00_SYSTEM/CORE/inbox/jules_task005_cleanup_report.md` に作成すること
+
+## Constraints
+- **コードのロジック変更は禁止**。ファイルの移動・削除・.gitignore更新のみ。
+- `.agent/scripts/genesis_coordinator.py` と `.agent/scripts/cdp_browser.py` は絶対に変更しないこと
+- `00_SYSTEM/CORE/` 配下のファイルは移動・削除しないこと
+- `GEMINI.md` は変更しないこと
