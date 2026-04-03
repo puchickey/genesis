@@ -1,32 +1,32 @@
-# Sensitive Data
-*.key
-*.token
-secrets.json
-.env
+# Personal Data (Layer B - Local Only)
+10_Domains/
+20_Inventory/
+00_SYSTEM/CORE/memories/
+00_SYSTEM/CORE/user_profile.md
+00_SYSTEM/CORE/LIFE_PLAN_CORE.md
+00_SYSTEM/CORE/current_status.md
+00_SYSTEM/CORE/active_tasks.md
 
-# System Files
-Thumbs.db
-Desktop.ini
-.DS_Store
-
-# Temporary
+# Temp / Log files
+*.txt
 *.log
-__pycache__/
-*.tmp
+*.html
+find_large.py
+find_loose.py
+iroha_api.json
+sync_log.txt
+objects.txt
+pack.txt
 
-# Excluded Caches & Binaries
-99_Migration/DotGemini_Backup/antigravity-browser-profile/
-05_Resources/Tools/DLab_Downloader/.wdm/
-
-# Drive Sync Conflicts
-*.tmp.drivedownload
-
-# Google Docs (Cloud Shortcuts - Cannot be git tracked)
-*.gdoc
-*.gsheet
-*.gslides
-*.gform
-
-.git.bak_cloud/
-
-*.gmap
+# Large binary files
+*.pdf
+*.xlsx
+*.docx
+*.xls
+*.psd
+*.zip
+*.jpg
+*.JPG
+*.png
+*.PNG
+*.csv

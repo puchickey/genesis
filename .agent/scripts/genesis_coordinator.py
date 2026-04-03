@@ -2,6 +2,8 @@ import os
 import time
 import subprocess
 import sys
+import requests
+import shutil
 
 # cdp_browser.pyにパスを通す
 sys.path.append(r"G:\マイドライブ\Genesis_OS\.agent\scripts")
@@ -10,6 +12,10 @@ from cdp_browser import CDPBrowser
 BASE_DIR = r"G:\マイドライブ\Genesis_OS\00_SYSTEM\CORE"
 OUTBOX = os.path.join(BASE_DIR, "outbox")
 INBOX = os.path.join(BASE_DIR, "inbox")
+REPO_ROOT = r"G:\マイドライブ\Genesis_OS"
+TEMP_DIR = r"C:\tmp"
+REPORTED_PRS_FILE = os.path.join(os.path.dirname(__file__), "reported_prs.txt")
+ENV_FILE = os.path.join(REPO_ROOT, ".env")
 
 # === CONFIGURATION (Phase 5) ===
 # Antigravityのチャット画面へ自動で完了報告を打ち込む機能のオンオフ
@@ -31,6 +37,9 @@ def show_toast(title, message):
     subprocess.run(["powershell", "-Command", ps_script], creationflags=subprocess.CREATE_NO_WINDOW)
 
 def process_outbox():
+    if not os.path.exists(TEMP_DIR):
+        os.makedirs(TEMP_DIR)
+
     for filename in os.listdir(OUTBOX):
         if filename.endswith(".md"):
             filepath = os.path.join(OUTBOX, filename)
@@ -39,26 +48,37 @@ def process_outbox():
             with open(filepath, 'r', encoding='utf-8') as f:
                 prompt_content = f.read().strip()
                 
-            # Gemini CLIに全ての判断と実行を委ねる（ズルを廃止）
-            # プロンプト内で「必要に応じて自律的にターミナルコマンドを実行すること」を強調
-            system_instruction = (
-                f"あなたはGenesis OSのバックグラウンドワーカーです。以下の指示を熟読し、ReActループを用いて自律的に作業を完遂せよ。\\n"
-                f"必要であればターミナル（シェル）組み込みツールを用いて指定されたPythonスクリプト等（例：G:\\マイドライブ\\Genesis_OS\\.agent\\scripts\\ 内のファイル）を実行せよ。\\n"
-                f"実行の際は、OSのデフォルトPython環境を利用し、仮想環境の差異に注意せよ。\\n"
-                f"最終結果は必ず {INBOX} 内にMarkdownファイルとして出力して終了せよ。\\n\\n"
-            )
+            # ASSIGNEE: Jules があるか確認
+            is_jules_task = "ASSIGNEE: Jules" in prompt_content
             
-            # Yoloモード相当のフラグがあれば付与（コマンドライン引数の詳細は要調整だが、まずは標準のプロンプトで実行機能を引き出す）
-            # もし npm の @google/gemini-cli で実行機能がプロンプトから呼べるならこれで起動する
-            # ※注：もし実際のコマンドに --yolo オプションがあるなら追加する
-            cmd = f"gemini --prompt '{system_instruction}{prompt_content}'"
-            
-            print(f"[Coordinator] Routing task {filename} to Gemini CLI...")
-            try:
-                subprocess.Popen(["powershell", "-Command", cmd], creationflags=subprocess.CREATE_NEW_CONSOLE)
-                print(f"[Coordinator] Task dispatched to Gemini CLI in background.")
-            except Exception as e:
-                print(f"[Coordinator] Error dispatching to Gemini: {e}")
+            if is_jules_task:
+                # Jules CLIを使って実行
+                print(f"[Coordinator] Routing task {filename} to Jules CLI...")
+                clean_prompt = prompt_content.replace("ASSIGNEE: Jules", "").strip()
+                cmd = f"jules new \"{clean_prompt}\""
+                try:
+                    subprocess.Popen(["powershell", "-Command", cmd], cwd=REPO_ROOT, creationflags=subprocess.CREATE_NEW_CONSOLE)
+                    print(f"[Coordinator] Task dispatched to Jules CLI in background.")
+                except Exception as e:
+                    print(f"[Coordinator] Error dispatching to Jules: {e}")
+            else:
+                # Layer A Workflow: /tmp/ にファイルをコピーしてパスを渡す
+                temp_filepath = os.path.join(TEMP_DIR, filename)
+                shutil.copy2(filepath, temp_filepath)
+                
+                report_name = filename.replace(".md", "_report.md")
+                inbox_path = os.path.join(INBOX, report_name)
+                
+                # Gemini CLIにC:\tmp\のファイルを読ませる
+                instruction = f"Read the file {temp_filepath} and execute all instructions. Write report to {inbox_path}"
+                cmd = f"gemini -y -p \"{instruction}\""
+                
+                print(f"[Coordinator] Routing task {filename} to Gemini CLI via Layer A workflow...")
+                try:
+                    subprocess.Popen(["powershell", "-Command", cmd], creationflags=subprocess.CREATE_NEW_CONSOLE)
+                    print(f"[Coordinator] Task dispatched to Gemini CLI in background.")
+                except Exception as e:
+                    print(f"[Coordinator] Error dispatching to Gemini: {e}")
                 
             # 処理が終わった指示書は消す
             os.remove(filepath)
@@ -120,6 +140,74 @@ def monitor_inbox():
             
             monitor_inbox.processed_set.add(f)
 
+def check_github_prs():
+    """
+    puchickey/genesis repositoryのOpenなPRを確認し、
+    未報告のものがあればレポートをinboxに作成する。
+    """
+    repo = "puchickey/genesis"
+    url = f"https://api.github.com/repos/{repo}/pulls?state=open"
+    
+    # .envからTOKENを取得
+    github_token = None
+    if os.path.exists(ENV_FILE):
+        with open(ENV_FILE, 'r') as f:
+            for line in f:
+                if line.startswith("GITHUB_TOKEN="):
+                    github_token = line.split("=", 1)[1].strip()
+    
+    headers = {}
+    if github_token:
+        headers["Authorization"] = f"token {github_token}"
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        if response.status_code == 200:
+            prs = response.json()
+            
+            # 既報のPR IDを読み込む
+            reported_ids = set()
+            if os.path.exists(REPORTED_PRS_FILE):
+                with open(REPORTED_PRS_FILE, 'r') as f:
+                    reported_ids = {line.strip() for line in f if line.strip()}
+            
+            new_prs_found = False
+            for pr in prs:
+                pr_id = str(pr['id'])
+                if pr_id not in reported_ids:
+                    # レポート作成
+                    report_filename = f"jules_pr_{pr['number']}.md"
+                    report_path = os.path.join(INBOX, report_filename)
+                    
+                    report_content = f"""# New Pull Request Detected
+- **Title**: {pr['title']}
+- **Number**: {pr['number']}
+- **User**: {pr['user']['login']}
+- **URL**: {pr['html_url']}
+- **Body**:
+{pr['body']}
+"""
+                    with open(report_path, 'w', encoding='utf-8') as f:
+                        f.write(report_content)
+                    
+                    print(f"[Coordinator] New PR report created: {report_filename}")
+                    show_toast("Genesis OS / GitHub", f"新しいPRが届きました: #{pr['number']} {pr['title']}")
+                    
+                    reported_ids.add(pr_id)
+                    new_prs_found = True
+            
+            if new_prs_found:
+                # 報告済みリストを更新
+                with open(REPORTED_PRS_FILE, 'w') as f:
+                    for rid in reported_ids:
+                        f.write(rid + "\n")
+        else:
+            # 頻繁に出すぎるとうるさいのでエラー時は表示のみ
+            if response.status_code != 403: # 403はレートリミットの可能性
+                print(f"[Coordinator] GitHub API error: {response.status_code} {response.text}")
+    except Exception as e:
+        print(f"[Coordinator] Failed to check GitHub PRs: {e}")
+
 def run():
     print("=======================================")
     print("Genesis OS Multi-Agent Coordinator v1.0")
@@ -131,6 +219,7 @@ def run():
         try:
             process_outbox()
             monitor_inbox()
+            check_github_prs()
             time.sleep(3)
         except Exception as e:
             print(f"[Error in Event Loop] {e}")
